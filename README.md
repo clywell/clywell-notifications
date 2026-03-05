@@ -1,6 +1,6 @@
 # Clywell.Core.Notifications
 
-[![Build Status](https://github.com/clywell/clywell-notifications/workflows/ci-cd/badge.svg)](https://github.com/clywell/clywell-notifications/actions)
+[![Build Status](https://github.com/clywell/clywell-notifications/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/clywell/clywell-notifications/actions/workflows/ci-cd.yml)
 [![NuGet Version](https://img.shields.io/nuget/v/Clywell.Core.Notifications.svg)](https://www.nuget.org/packages/Clywell.Core.Notifications/)
 [![License](https://img.shields.io/github/license/clywell/clywell-notifications.svg)](LICENSE)
 

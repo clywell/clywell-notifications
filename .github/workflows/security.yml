@@ -1,7 +1,9 @@
 name: Security Scanning
 
 on:
-  # Only run on schedule and manual trigger to avoid duplicating ci-cd.yml
+  push:
+    branches: ["main"]
+  # Also run on schedule and manual trigger
   schedule:
     - cron: '0 0 * * 0'  # Weekly on Sunday
   workflow_dispatch:
@@ -71,6 +73,10 @@ jobs:
   codeql:
     runs-on: ubuntu-latest
     name: CodeQL Analysis
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
     strategy:
       fail-fast: false
       matrix:
@@ -109,11 +115,11 @@ jobs:
     runs-on: ubuntu-latest
     name: OSSF Scorecard
     permissions:
-      # Needed to upload the results to code-scanning dashboard.
+      # Needed to upload SARIF results to GitHub Code Scanning
       security-events: write
-      # Needed to access GitHub OIDC token for publish_results: true
+      # Needed for publish_results: true — authenticates via GitHub OIDC (no sign-up required)
       id-token: write
-      # Needed to access secrets.GITHUB_TOKEN
+      # Needed to read repo contents
       contents: read
 
     steps:
@@ -128,9 +134,10 @@ jobs:
           results_file: results.sarif
           results_format: sarif
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_results: true
+          # Only publish to securityscorecards.dev on push to main — schedule/manual runs just scan locally
+          publish_results: ${{ github.event_name == 'push' }}
 
-      - name: Upload SARIF results
+      - name: Upload SARIF results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
