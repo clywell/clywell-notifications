@@ -1,6 +1,6 @@
 # Clywell.Core.Notifications
 
-[![Build Status](https://github.com/clywell/clywell-notifications/workflows/CI/badge.svg)](https://github.com/clywell/clywell-notifications/actions)
+[![Build Status](https://github.com/clywell/clywell-notifications/workflows/ci-cd/badge.svg)](https://github.com/clywell/clywell-notifications/actions)
 [![NuGet Version](https://img.shields.io/nuget/v/Clywell.Core.Notifications.svg)](https://www.nuget.org/packages/Clywell.Core.Notifications/)
 [![License](https://img.shields.io/github/license/clywell/clywell-notifications.svg)](LICENSE)
 
@@ -10,13 +10,13 @@ Multi-channel notification dispatch for .NET — pluggable channel providers, fl
 
 ## Packages
 
-| Package | Description |
-|---------|-------------|
-| `Clywell.Core.Notifications` | Core abstractions, dispatch pipeline, and fluent builder API |
-| `Clywell.Core.Notifications.Smtp` | SMTP email provider using MailKit |
-| `Clywell.Core.Notifications.Renderer.Scriban` | Scriban template rendering |
-| `Clywell.Core.Notifications.SignalR` | Real-time in-app delivery via SignalR |
-| `Clywell.Core.Notifications.Sse` | Real-time in-app delivery via Server-Sent Events |
+| Package | NuGet | Description |
+|---------|-------|----------|
+| `Clywell.Core.Notifications` | [![NuGet](https://img.shields.io/nuget/v/Clywell.Core.Notifications.svg)](https://www.nuget.org/packages/Clywell.Core.Notifications/) | Core abstractions, dispatch pipeline, and fluent builder API |
+| `Clywell.Core.Notifications.Smtp` | [![NuGet](https://img.shields.io/nuget/v/Clywell.Core.Notifications.Smtp.svg)](https://www.nuget.org/packages/Clywell.Core.Notifications.Smtp/) | SMTP email provider using MailKit |
+| `Clywell.Core.Notifications.Renderer.Scriban` | [![NuGet](https://img.shields.io/nuget/v/Clywell.Core.Notifications.Renderer.Scriban.svg)](https://www.nuget.org/packages/Clywell.Core.Notifications.Renderer.Scriban/) | Scriban template rendering |
+| `Clywell.Core.Notifications.SignalR` | [![NuGet](https://img.shields.io/nuget/v/Clywell.Core.Notifications.SignalR.svg)](https://www.nuget.org/packages/Clywell.Core.Notifications.SignalR/) | Real-time in-app delivery via SignalR |
+| `Clywell.Core.Notifications.Sse` | [![NuGet](https://img.shields.io/nuget/v/Clywell.Core.Notifications.Sse.svg)](https://www.nuget.org/packages/Clywell.Core.Notifications.Sse/) | Real-time in-app delivery via Server-Sent Events |
 
 ---
 
