@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!-- Package Identity -->
+        <PackageId>Clywell.Core.Notifications.Smtp</PackageId>
+        <Description>SMTP email provider for Clywell.Core.Notifications using MailKit -
+            configurable SMTP transport with TLS support.</Description>
+        <PackageTags>clywell;notifications;smtp;email;mailkit</PackageTags>
+
+        <!-- URLs -->
+        <PackageProjectUrl>https://github.com/clywell/clywell-notifications</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/clywell/clywell-notifications</RepositoryUrl>
+
+        <!-- Include README in package -->
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../../README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <!-- Dependencies -->
+    <ItemGroup>
+        <ProjectReference Include="..\Clywell.Core.Notifications\Clywell.Core.Notifications.csproj" />
+        <PackageReference Include="MailKit" />
+    </ItemGroup>
+
+    <!-- Test access to internal types -->
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Clywell.Core.Notifications.Smtp.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <!-- Versioning -->
+    <ItemGroup>
+        <PackageReference Include="Nerdbank.GitVersioning">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <!-- Source Link -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+</Project>

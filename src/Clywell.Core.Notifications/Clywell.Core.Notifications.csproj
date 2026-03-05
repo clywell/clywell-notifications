@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!-- Package Identity -->
+        <PackageId>Clywell.Core.Notifications</PackageId>
+        <Description>Notification abstractions for .NET — channel-based dispatch, template
+            rendering,
+            and pluggable providers. Zero infrastructure dependency for Application layer usage.</Description>
+        <PackageTags>clywell;notifications;email;sms;push;template;clean-architecture</PackageTags>
+
+        <!-- URLs -->
+        <PackageProjectUrl>https://github.com/clywell/clywell-notifications</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/clywell/clywell-notifications</RepositoryUrl>
+
+        <!-- Include README in package -->
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../../README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <!-- Dependencies -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    </ItemGroup>
+
+    <!-- Test access to internal types -->
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Clywell.Core.Notifications.Tests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Clywell.Core.Notifications.Smtp</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Clywell.Core.Notifications.SignalR</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Clywell.Core.Notifications.Sse</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <!-- Versioning -->
+    <ItemGroup>
+        <PackageReference Include="Nerdbank.GitVersioning">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <!-- Source Link -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+</Project>

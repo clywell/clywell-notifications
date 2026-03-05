@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageId>Clywell.Core.Notifications.SignalR</PackageId>
+        <Description>SignalR real-time notification channel for Clywell.Core.Notifications.</Description>
+        <PackageTags>clywell;notifications;signalr;realtime</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" />
+        <PackageReference Include="Newtonsoft.Json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Clywell.Core.Notifications\Clywell.Core.Notifications.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="Clywell.Core.Notifications.SignalR.Tests" />
+    </ItemGroup>
+
+</Project>

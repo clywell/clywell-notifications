@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageId>Clywell.Core.Notifications.Sse</PackageId>
+        <Description>Server-Sent Events (SSE) real-time notification channel for
+            Clywell.Core.Notifications.</Description>
+        <PackageTags>clywell;notifications;sse;server-sent-events;realtime</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Clywell.Core.Notifications\Clywell.Core.Notifications.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="Clywell.Core.Notifications.Sse.Tests" />
+    </ItemGroup>
+
+</Project>

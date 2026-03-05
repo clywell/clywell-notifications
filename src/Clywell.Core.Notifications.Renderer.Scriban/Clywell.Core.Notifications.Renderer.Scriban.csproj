@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!-- Package Identity -->
+        <PackageId>Clywell.Core.Notifications.Renderer.Scriban</PackageId>
+        <Description>Scriban template rendering provider for Clywell.Core.Notifications.
+            Dynamic subject, HTML, and plain-text template rendering.</Description>
+        <PackageTags>clywell;notifications;renderer;scriban;template;rendering</PackageTags>
+
+        <!-- URLs -->
+        <PackageProjectUrl>https://github.com/clywell/clywell-notifications</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/clywell/clywell-notifications</RepositoryUrl>
+
+        <!-- Include README in package -->
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../../README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <!-- Dependencies -->
+    <ItemGroup>
+        <ProjectReference Include="..\Clywell.Core.Notifications\Clywell.Core.Notifications.csproj" />
+        <PackageReference Include="Scriban" />
+    </ItemGroup>
+
+    <!-- Test access to internal types -->
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Clywell.Core.Notifications.Renderer.Scriban.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <!-- Versioning -->
+    <ItemGroup>
+        <PackageReference Include="Nerdbank.GitVersioning">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <!-- Source Link -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+</Project>
