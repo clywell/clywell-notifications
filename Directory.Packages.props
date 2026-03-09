@@ -13,7 +13,7 @@
         <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.3" />
 
         <!-- SMTP Provider -->
-        <PackageVersion Include="MailKit" Version="4.15.0" />
+        <PackageVersion Include="MailKit" Version="4.15.1" />
 
         <!-- Template Rendering -->
         <PackageVersion Include="Scriban" Version="6.5.5" />
