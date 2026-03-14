@@ -23,6 +23,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Clywell.Core.Notifications\Clywell.Core.Notifications.csproj" />
         <PackageReference Include="MailKit" />
+        <PackageReference Include="MimeKit" />
     </ItemGroup>
 
     <!-- Test access to internal types -->
