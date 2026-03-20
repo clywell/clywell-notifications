@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-03-20
+
+### Changed
+
+#### Clywell.Core.Notifications.Smtp
+
+- Bumped `MailKit` from `4.15.0` to `4.15.1`
+- Added `MimeKit` `4.15.1` as an explicit direct package dependency
+
+#### Clywell.Core.Notifications.Renderer.Scriban
+
+- Bumped `Scriban` from `6.5.5` to `6.6.0`
+
+#### All Packages
+
+- Bumped `Microsoft.Extensions.DependencyInjection.Abstractions` from `10.0.3` to `10.0.5`
+- Bumped `Microsoft.Extensions.DependencyInjection` from `10.0.3` to `10.0.5`
+- Bumped `Microsoft.Extensions.Logging.Abstractions` from `10.0.3` to `10.0.5`
+
 ## [1.0.0] - 2026-03-05
 
 ### Added
