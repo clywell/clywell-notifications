@@ -53,7 +53,9 @@ internal sealed class NotificationService : INotificationService
                 Recipient = request.Recipient,
                 Content = content,
                 Priority = request.Priority,
-                Metadata = request.Metadata
+                Metadata = request.Metadata,
+                TemplateKey = request.TemplateKey,
+                Parameters = request.Parameters
             };
 
             NotificationResult? result = null;
@@ -125,11 +127,19 @@ internal sealed class NotificationService : INotificationService
     {
         if (request.TemplateKey is not null)
         {
+            if (_options.RenderingMode == RenderingMode.Delegated)
+            {
+                // Rendering is delegated to the channel - skip local rendering.
+                // The channel reads TemplateKey and Parameters from NotificationMessage directly.
+                return new RenderedContent(Subject: null, HtmlBody: null, PlainTextBody: null);
+            }
+
             if (_templateRenderer is null)
             {
                 throw new InvalidOperationException(
                     $"Template key '{request.TemplateKey}' was specified but no ITemplateRenderer is registered. " +
-                    "Register a template renderer (e.g., AddScribanRenderer()) to use template-based notifications.");
+                    "Register a template renderer (e.g., AddScribanRenderer()) or configure " +
+                    "RenderingMode.Delegated if rendering is handled by the channel.");
             }
 
             return await _templateRenderer.RenderAsync(request.TemplateKey, request.Parameters, cancellationToken).ConfigureAwait(false);

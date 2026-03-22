@@ -73,4 +73,42 @@ public sealed class NotificationOptionsTests
 
         Assert.Throws<ArgumentOutOfRangeException>(() => options.WithMaxRetryAttempts(-1));
     }
+
+    [Fact]
+    public void RenderingMode_DefaultsToLocal()
+    {
+        var options = new NotificationOptions();
+
+        Assert.Equal(RenderingMode.Local, options.RenderingMode);
+    }
+
+    [Fact]
+    public void WithRenderingMode_SetsDelegated_ReturnsCorrectValue()
+    {
+        var options = new NotificationOptions()
+            .WithRenderingMode(RenderingMode.Delegated);
+
+        Assert.Equal(RenderingMode.Delegated, options.RenderingMode);
+    }
+
+    [Fact]
+    public void WithRenderingMode_ReturnsSameInstance_ForFluentChaining()
+    {
+        var options = new NotificationOptions();
+
+        var result = options.WithRenderingMode(RenderingMode.Delegated);
+
+        Assert.Same(options, result);
+    }
+
+    [Fact]
+    public void WithRenderingMode_CanBeChainedWithOtherMethods()
+    {
+        var options = new NotificationOptions()
+            .WithRenderingMode(RenderingMode.Delegated)
+            .WithMaxRetryAttempts(5);
+
+        Assert.Equal(RenderingMode.Delegated, options.RenderingMode);
+        Assert.Equal(5, options.MaxRetryAttempts);
+    }
 }

@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-03-21
+
+### Added
+
+#### Clywell.Core.Notifications
+
+- `RenderingMode` enum - `Local` (default) and `Delegated`; controls whether `NotificationService` renders templates locally or defers rendering to the channel
+- `NotificationOptions.RenderingMode` property - defaults to `RenderingMode.Local`
+- `NotificationOptions.WithRenderingMode(RenderingMode)` fluent method - configure rendering behaviour at registration time
+- `NotificationMessage.TemplateKey` - exposes the original template key on the message passed to channels; useful when channels delegate rendering externally
+- `NotificationMessage.Parameters` - exposes the raw template parameters on the message passed to channels
+
+### Changed
+
+#### Clywell.Core.Notifications
+
+- `NotificationService` now populates `NotificationMessage.TemplateKey` and `NotificationMessage.Parameters` from the originating `NotificationRequest`, giving channels access to raw template data regardless of rendering mode
+- `NotificationService.ResolveContentAsync` - when `RenderingMode.Delegated` is configured, local rendering is skipped entirely and `RenderedContent(null, null, null)` is returned; the channel is responsible for rendering using `NotificationMessage.TemplateKey` and `NotificationMessage.Parameters`
+- `NotificationService.ResolveContentAsync` - when `RenderingMode.Local` is configured (default), the original behaviour is preserved: an `InvalidOperationException` is thrown if a `TemplateKey` is set but no `ITemplateRenderer` is registered; error message now includes a hint to configure `RenderingMode.Delegated`
+
 ## [1.0.1] - 2026-03-20
 
 ### Changed
@@ -129,3 +149,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Connection-based dispatch — targets a single `Recipient.ConnectionId`
 - Notification payload shape: `{ id, subject, body, priority, metadata, sentAt }`
 - `ServiceCollectionExtensions.AddNotificationsSse` — registers SSE channel and `ISseConnectionManager` as singleton
+
+[Unreleased]: https://github.com/clywell/clywell-notifications/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/clywell/clywell-notifications/compare/v1.0.1...v1.1.0
+[1.0.1]: https://github.com/clywell/clywell-notifications/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/clywell/clywell-notifications/releases/tag/v1.0.0

@@ -16,4 +16,10 @@ public sealed record NotificationMessage
 
     /// <summary>Gets custom metadata for tracking.</summary>
     public Dictionary<string, string> Metadata { get; init; } = [];
+
+    /// <summary>Gets the template key, if the notification was template-based.</summary>
+    public string? TemplateKey { get; init; }
+
+    /// <summary>Gets the raw template parameters, if the notification was template-based.</summary>
+    public IReadOnlyDictionary<string, object>? Parameters { get; init; }
 }

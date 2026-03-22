@@ -342,6 +342,190 @@ public sealed class NotificationServiceTests
             Times.Once);
     }
 
+    [Fact]
+    public async Task SendAsync_WithTemplateKey_PopulatesTemplateKeyOnMessage()
+    {
+        NotificationMessage? sentMessage = null;
+
+        var channel = new Mock<INotificationChannel>();
+        channel.SetupGet(x => x.Channel).Returns(NotificationChannel.Email);
+        channel
+            .Setup(x => x.SendAsync(It.IsAny<NotificationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<NotificationMessage, CancellationToken>((message, _) => sentMessage = message)
+            .ReturnsAsync(new NotificationResult { NotificationId = "template-pass-through", Status = NotificationStatus.Sent, SentAt = DateTimeOffset.UtcNow });
+
+        var renderer = new Mock<ITemplateRenderer>();
+        renderer
+            .Setup(x => x.RenderAsync("welcome", It.IsAny<Dictionary<string, object>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new RenderedContent("Welcome", "<p>Hello Alice</p>", "Hello Alice"));
+
+        var service = CreateService(
+            new[] { channel.Object },
+            renderer: renderer.Object,
+            options: new NotificationOptions().WithRenderingMode(RenderingMode.Local));
+
+        var request = CreateRequest(NotificationChannel.Email) with
+        {
+            TemplateKey = "welcome",
+            Parameters = new Dictionary<string, object> { ["name"] = "Alice" }
+        };
+
+        var result = await service.SendAsync(request);
+
+        Assert.Equal(NotificationStatus.Sent, result.Status);
+        Assert.NotNull(sentMessage);
+        Assert.Equal("welcome", sentMessage!.TemplateKey);
+        Assert.NotNull(sentMessage.Parameters);
+        Assert.True(sentMessage.Parameters!.TryGetValue("name", out var value));
+        Assert.Equal("Alice", value);
+    }
+
+    [Fact]
+    public async Task SendAsync_WithoutTemplateKey_TemplateKeyIsNullOnMessage()
+    {
+        NotificationMessage? sentMessage = null;
+
+        var channel = new Mock<INotificationChannel>();
+        channel.SetupGet(x => x.Channel).Returns(NotificationChannel.Email);
+        channel
+            .Setup(x => x.SendAsync(It.IsAny<NotificationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<NotificationMessage, CancellationToken>((message, _) => sentMessage = message)
+            .ReturnsAsync(new NotificationResult { NotificationId = "inline-pass-through", Status = NotificationStatus.Sent, SentAt = DateTimeOffset.UtcNow });
+
+        var service = CreateService(new[] { channel.Object });
+        var request = CreateRequest(NotificationChannel.Email) with
+        {
+            TemplateKey = null,
+            Parameters = null!,
+            Subject = "Hello",
+            Body = "World"
+        };
+
+        var result = await service.SendAsync(request);
+
+        Assert.Equal(NotificationStatus.Sent, result.Status);
+        Assert.NotNull(sentMessage);
+        Assert.Null(sentMessage!.TemplateKey);
+        Assert.Null(sentMessage.Parameters);
+    }
+
+    [Fact]
+    public async Task SendAsync_DelegatedMode_WithTemplateKey_SkipsRendererCallsRenderer()
+    {
+        NotificationMessage? sentMessage = null;
+
+        var channel = new Mock<INotificationChannel>();
+        channel.SetupGet(x => x.Channel).Returns(NotificationChannel.Email);
+        channel
+            .Setup(x => x.SendAsync(It.IsAny<NotificationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<NotificationMessage, CancellationToken>((message, _) => sentMessage = message)
+            .ReturnsAsync(new NotificationResult { NotificationId = "delegated-id", Status = NotificationStatus.Sent, SentAt = DateTimeOffset.UtcNow });
+
+        var renderer = new Mock<ITemplateRenderer>();
+
+        var service = CreateService(
+            new[] { channel.Object },
+            renderer: renderer.Object,
+            options: new NotificationOptions().WithRenderingMode(RenderingMode.Delegated));
+
+        var request = CreateRequest(NotificationChannel.Email) with
+        {
+            TemplateKey = "reset-password",
+            Parameters = new Dictionary<string, object> { ["token"] = "abc123" }
+        };
+
+        var result = await service.SendAsync(request);
+
+        Assert.Equal(NotificationStatus.Sent, result.Status);
+        renderer.Verify(x => x.RenderAsync(It.IsAny<string>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<CancellationToken>()), Times.Never);
+        Assert.NotNull(sentMessage);
+        Assert.Equal("reset-password", sentMessage!.TemplateKey);
+        Assert.NotNull(sentMessage.Parameters);
+        Assert.True(sentMessage.Parameters!.TryGetValue("token", out var token));
+        Assert.Equal("abc123", token);
+        Assert.Null(sentMessage.Content.Subject);
+        Assert.Null(sentMessage.Content.HtmlBody);
+        Assert.Null(sentMessage.Content.PlainTextBody);
+    }
+
+    [Fact]
+    public async Task SendAsync_DelegatedMode_WithTemplateKey_NoRendererRegistered_DoesNotThrow()
+    {
+        var channel = new Mock<INotificationChannel>();
+        channel.SetupGet(x => x.Channel).Returns(NotificationChannel.Email);
+        channel
+            .Setup(x => x.SendAsync(It.IsAny<NotificationMessage>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new NotificationResult { NotificationId = "delegated-no-renderer", Status = NotificationStatus.Sent, SentAt = DateTimeOffset.UtcNow });
+
+        var service = CreateService(
+            new[] { channel.Object },
+            options: new NotificationOptions().WithRenderingMode(RenderingMode.Delegated));
+
+        var request = CreateRequest(NotificationChannel.Email) with
+        {
+            TemplateKey = "verify-email"
+        };
+
+        var result = await service.SendAsync(request);
+
+        Assert.NotEqual(NotificationStatus.Failed, result.Status);
+    }
+
+    [Fact]
+    public async Task SendAsync_LocalMode_WithTemplateKey_NoRendererRegistered_ThrowsInvalidOperation()
+    {
+        var channel = new Mock<INotificationChannel>();
+        channel.SetupGet(x => x.Channel).Returns(NotificationChannel.Email);
+
+        var service = CreateService(
+            new[] { channel.Object },
+            options: new NotificationOptions().WithRenderingMode(RenderingMode.Local));
+
+        var request = CreateRequest(NotificationChannel.Email) with
+        {
+            TemplateKey = "welcome"
+        };
+
+        var result = await service.SendAsync(request);
+
+        Assert.Equal(NotificationStatus.Failed, result.Status);
+    }
+
+    [Fact]
+    public async Task SendAsync_LocalMode_WithTemplateKey_RendererRegistered_CallsRenderer()
+    {
+        NotificationMessage? sentMessage = null;
+
+        var channel = new Mock<INotificationChannel>();
+        channel.SetupGet(x => x.Channel).Returns(NotificationChannel.Email);
+        channel
+            .Setup(x => x.SendAsync(It.IsAny<NotificationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<NotificationMessage, CancellationToken>((message, _) => sentMessage = message)
+            .ReturnsAsync(new NotificationResult { NotificationId = "local-renderer", Status = NotificationStatus.Sent, SentAt = DateTimeOffset.UtcNow });
+
+        var renderer = new Mock<ITemplateRenderer>();
+        renderer
+            .Setup(x => x.RenderAsync("welcome", It.IsAny<Dictionary<string, object>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new RenderedContent("Subject", "<p>Body</p>", "Body"));
+
+        var service = CreateService(
+            new[] { channel.Object },
+            renderer: renderer.Object,
+            options: new NotificationOptions().WithRenderingMode(RenderingMode.Local));
+
+        var request = CreateRequest(NotificationChannel.Email) with
+        {
+            TemplateKey = "welcome"
+        };
+
+        var result = await service.SendAsync(request);
+
+        Assert.Equal(NotificationStatus.Sent, result.Status);
+        renderer.Verify(x => x.RenderAsync("welcome", It.IsAny<Dictionary<string, object>>(), It.IsAny<CancellationToken>()), Times.Once);
+        Assert.NotNull(sentMessage);
+        Assert.Equal("Subject", sentMessage!.Content.Subject);
+    }
+
     private static NotificationRequest CreateRequest(NotificationChannel channel)
     {
         return new NotificationRequest

@@ -8,6 +8,9 @@ public sealed class NotificationOptions
     /// <summary>The default channel used when no channel is specified on a request.</summary>
     public NotificationChannel DefaultChannel { get; private set; } = NotificationChannel.Email;
 
+    /// <summary>Gets the rendering mode. Defaults to <see cref="RenderingMode.Local"/>.</summary>
+    public RenderingMode RenderingMode { get; private set; } = RenderingMode.Local;
+
     /// <summary>Maximum number of retry attempts for failed notifications.</summary>
     public int MaxRetryAttempts { get; private set; } = 3;
 
@@ -33,6 +36,17 @@ public sealed class NotificationOptions
     public NotificationOptions WithRetryDelay(TimeSpan delay)
     {
         RetryDelay = delay;
+        return this;
+    }
+
+    /// <summary>
+    /// Configures the rendering mode.
+    /// Use <see cref="RenderingMode.Delegated"/> when channels handle rendering themselves
+    /// (e.g. by forwarding to an external API) and no local <see cref="ITemplateRenderer"/> is needed.
+    /// </summary>
+    public NotificationOptions WithRenderingMode(RenderingMode mode)
+    {
+        RenderingMode = mode;
         return this;
     }
 }

@@ -5,6 +5,9 @@ namespace Clywell.Core.Notifications;
 /// </summary>
 public sealed record NotificationRequest
 {
+    /// <summary>Gets the tenant identifier. Required when routing to a multi-tenant notification service.</summary>
+    public Guid? TenantId { get; init; }
+
     /// <summary>The notification channel. When null, the default from NotificationOptions is used.</summary>
     public NotificationChannel? Channel { get; init; }
 
