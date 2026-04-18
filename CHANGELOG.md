@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.2] - 2026-04-18
 
+### Fixed
+
+#### `Clywell.Core.Notifications.Smtp`
+- Fixed CS8604 compiler error: `SmtpNotificationChannel` now passes `_options.Password ?? string.Empty` to `AuthenticateAsync`, resolving the nullable reference type mismatch
+
 ### Changed
 - Packages updated
 

@@ -58,7 +58,7 @@ internal sealed class SmtpNotificationChannel : INotificationChannel
 
             if (!string.IsNullOrWhiteSpace(_options.UserName))
             {
-                await client.AuthenticateAsync(_options.UserName, _options.Password, cancellationToken).ConfigureAwait(false);
+                await client.AuthenticateAsync(_options.UserName, _options.Password ?? string.Empty, cancellationToken).ConfigureAwait(false);
             }
 
             await client.SendAsync(mimeMessage, cancellationToken).ConfigureAwait(false);
