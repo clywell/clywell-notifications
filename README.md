@@ -17,6 +17,7 @@ Multi-channel notification dispatch for .NET — pluggable channel providers, fl
 | `Clywell.Core.Notifications.Renderer.Scriban` | [![NuGet](https://img.shields.io/nuget/v/Clywell.Core.Notifications.Renderer.Scriban.svg)](https://www.nuget.org/packages/Clywell.Core.Notifications.Renderer.Scriban/) | Scriban template rendering |
 | `Clywell.Core.Notifications.SignalR` | [![NuGet](https://img.shields.io/nuget/v/Clywell.Core.Notifications.SignalR.svg)](https://www.nuget.org/packages/Clywell.Core.Notifications.SignalR/) | Real-time in-app delivery via SignalR |
 | `Clywell.Core.Notifications.Sse` | [![NuGet](https://img.shields.io/nuget/v/Clywell.Core.Notifications.Sse.svg)](https://www.nuget.org/packages/Clywell.Core.Notifications.Sse/) | Real-time in-app delivery via Server-Sent Events |
+| `Clywell.Core.Notifications.Firebase` | [![NuGet](https://img.shields.io/nuget/v/Clywell.Core.Notifications.Firebase.svg)](https://www.nuget.org/packages/Clywell.Core.Notifications.Firebase/) | Firebase Cloud Messaging (FCM) push provider |
 
 ---
 
@@ -31,6 +32,7 @@ dotnet add package Clywell.Core.Notifications
 dotnet add package Clywell.Core.Notifications.Smtp
 dotnet add package Clywell.Core.Notifications.SignalR
 dotnet add package Clywell.Core.Notifications.Sse
+dotnet add package Clywell.Core.Notifications.Firebase
 
 # Optional: Scriban template rendering
 dotnet add package Clywell.Core.Notifications.Renderer.Scriban
@@ -271,6 +273,21 @@ Configured via `AddNotificationsSse(options => ...)`.
 services.AddNotificationsSse(options => options
     .WithEventName("app-notification")
     .UseUserAddressing());
+```
+
+### Firebase Push — `FirebaseOptions`
+
+Configured via `AddNotificationsFirebase(options => ...)`.
+
+| Method | Default | Description |
+|--------|---------|-------------|
+| `UseCredentialFile(string)` | Application Default | Path to the Google Service Account JSON file |
+| `UseCredentialJson(string)` | Application Default | Raw JSON string representation of the Service Account |
+| `UseProjectId(string)` | Derived from Credentials | Explicitly sets the Google Cloud Project ID |
+
+```csharp
+services.AddNotificationsFirebase(options => options
+    .UseCredentialFile("firebase-adminsdk.json"));
 ```
 
 ---
@@ -617,7 +634,8 @@ INotificationService
 INotificationChannel implementations:
   ├── SmtpNotificationChannel       → Email  (MailKit SMTP)
   ├── SignalRNotificationChannel     → InApp  (SignalR Hub)
-  └── SseNotificationChannel         → InApp  (HTTP streaming)
+  ├── SseNotificationChannel         → InApp  (HTTP streaming)
+  └── FirebasePushChannel            → Push   (Firebase Cloud Messaging)
 
 ITemplateRenderer:
   └── ScribanTemplateRenderer        → renders via ITemplateProvider

@@ -41,5 +41,8 @@
 
         <!-- Security patch for transitive dependency from SignalR.Core -->
         <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
+
+        <!-- Providers -->
+        <PackageVersion Include="FirebaseAdmin" Version="3.1.0" />
     </ItemGroup>
 </Project>
