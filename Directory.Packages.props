@@ -6,11 +6,11 @@
     <ItemGroup>
         <!-- DI Abstractions -->
         <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions"
-            Version="10.0.6" />
-        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.6" />
+            Version="10.0.7" />
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
 
         <!-- Logging Abstractions -->
-        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.6" />
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.7" />
 
         <!-- SMTP Provider -->
         <PackageVersion Include="MailKit" Version="4.16.0" />
@@ -22,7 +22,7 @@
         <!-- Test Framework -->
         <PackageVersion Include="xunit" Version="2.9.3" />
         <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
-        <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
+        <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
 
         <!-- Mocking -->
         <PackageVersion Include="Moq" Version="4.20.72" />
@@ -34,7 +34,7 @@
         <PackageVersion Include="Nerdbank.GitVersioning" Version="3.9.50" />
 
         <!-- Source Link -->
-        <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.202" />
+        <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.203" />
 
         <!-- Realtime (Wave 2) -->
         <PackageVersion Include="Microsoft.AspNetCore.SignalR.Core" Version="1.2.9" />
